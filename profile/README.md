@@ -1,8 +1,13 @@
-# 🛡️ AI Chatbot & CRM Tagging for Insurance - Internal Web Tool
+# 🛡️ AI Chatbot & CRM Tagging for Insurance
 
 ## 📌 Overview
 
-This project is an **internal AI assistant tool** for a local insurance company. It supports marketing teams in **conversationally recommending VHIS insurance plans** while also building a **CRM tagging pipeline** to assist with user classification and campaign retargeting. The chatbot leverages Google Gemini and a local semantic similarity model to provide accurate, personalized suggestions.
+This project is an **AI assistant platform for both end-users and internal teams** at a local insurance company.
+
+- For **customers**, it acts as a **conversational recommendation assistant**, helping them find the most suitable VHIS insurance plans based on personal needs.
+- For **internal marketing teams**, it builds a **CRM tagging pipeline** to classify user intents and enable behavioral analytics for future campaign retargeting.
+
+The chatbot leverages both **Google Gemini** for natural conversation and **a custom-trained local semantic similarity model** to ensure personalized and relevant plan suggestions.
 
 ---
 
@@ -24,7 +29,7 @@ This project is an **internal AI assistant tool** for a local insurance company.
 
 ### 3. 🔐 Authentication (Optional Feature)
 
-- Google Sign-in / Username login with session handling.
+- Google Sign-in / Email login with session handling.
 
 ### 4. 💳 Insurance Browsing & Payment (Optional Feature)
 
@@ -36,15 +41,16 @@ This project is an **internal AI assistant tool** for a local insurance company.
 
 ## 🎯 Target Audience
 
-- Internal marketing team members.
-- Use case: pre-screening leads, generating interest, guiding suitable campaigns.
+- Consumers looking for insurance products that match their personal needs.
+- Non-technical users who may require assistance from an AI-powered chatbot.
+- Customer advisors leveraging the system to recommend insurance plans and analyze customer behavior via the CRM. 
 
 ### 📷 Use case Diagram
 
 Below are some visual examples to better understand the use case and flow of the tool:
 
 **Chatbot Interface**  
-  ![Chatbot Interface](./pictures/system_usecase.png)
+  ![Chatbot Interface](../pictures/system_usecase.png)
 
 
 ## 🏗️ Architecture
@@ -56,8 +62,7 @@ Below are some visual examples to better understand the use case and flow of the
   - Local Semantic Search Model (`POST 192.168.4.154:8000/sendMsg`).
 
 **Deployment Diagram**  
-  ![Deployment Diagram](./pictures/system_usecase.png)
-
+  ![Deployment Diagram](../pictures/deployment_diagram.png)
 ---
 
 ## 📂 Folder Structure
@@ -78,7 +83,24 @@ Below are some visual examples to better understand the use case and flow of the
 
 ## 🔍 Implementation Walkthrough
 
-### 🧠 Gemini Prompting Flow
+### 🧪 Step 1: Semantic Matching with Local Model
+
+```ts
+const response = await axios.post('http://localhost:8000/sendMsg', {
+  text: userInput
+});
+const tags = response.data?.[0] || [];
+const ids = response.data?.[1] || [];
+```
+
+- ✅ **Purpose**: Extract semantically relevant insurance products from corpus.
+- ✅ **Output**: 
+  - A list of plan names (`tags`) with similarity scores.
+  - A list of product metadata (`ids`) to map recommended plans by index.
+
+---
+
+### 🧠 Step 2: Gemini Prompting Flow
 
 ```ts
 const prompt = buildPrompt(userInput, tags);
@@ -86,37 +108,39 @@ const prompt = buildPrompt(userInput, tags);
 // Ensures only natural language returned
 ```
 
-### 🧾 CRM Tag Logging Logic
+- 🎯 Injects user query + tag-based suggestions.
+- 🔒 Restricts output to natural language, avoiding JSON/Markdown for better UX.
+
+---
+
+### 🧾 Step 3: CRM Tag Logging Logic
 
 ```ts
 await TagLog.create({
-  name: //name of insurance,
-  type: //type of insurance, ex: "Flexi Premium",
-  targetAudience: [ //target of that products
-      "VIP clients",
-      "those with pre-existing conditions", 
-      ....
-  ],
-  features: [ //what does that products bring to
-      "Private room",
-      "Full hospital expense coverage", 
-      ....
-  ]
-})
+  name: // name of insurance,
+  type: // ex: "Flexi Premium",
+  targetAudience: [ "VIP clients", "pre-existing conditions" ],
+  features: [ "Private room", "Full hospital expense coverage" ]
+});
 ```
 
+- 📦 Stores most relevant tag per session for long-term trend tracking.
+- 📊 Enables analysis for future segmentation and retargeting.
+
+---
+
 ## Here are the flow user interact with our system: 
--   ![Login Diagram](./pictures/login_sequence.png)
+-   ![Login Diagram](../pictures/login_sequence.png)
 Login pipeline
 
 --- 
 
--   ![Payment Diagram](./pictures/payment_sequence.png)
+-   ![Payment Diagram](../pictures/payment_sequence.png)
 Payment pipeline
 
 ---
 
--   ![AI Diagram](./pictures/ai_pipeline_sequence.png)
+-   ![AI Diagram](../pictures/ai_pipeline_sequence.png)
 AI pipeline
 
 ---
