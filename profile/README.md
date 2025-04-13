@@ -59,7 +59,10 @@ Below are some visual examples to better understand the use case and flow of the
 - **Backend**: Node.js + Express + MongoDB.
 - **AI Services**:
   - Google Gemini API.
-  - Local Semantic Search Model (`POST 192.168.4.154:8000/sendMsg`).
+  - Local Semantic Search Model (MODEL: paraphrase-MiniLM-L6-v2).
+
+**Architecture Diagram**
+  ![Architecture Diagram](../pictures/architecture_diagram.png)
 
 **Deployment Diagram**  
   ![Deployment Diagram](../pictures/deployment_diagram.png)
