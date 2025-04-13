@@ -61,10 +61,10 @@ Below are some visual examples to better understand the use case and flow of the
   - Google Gemini API.
   - Local Semantic Search Model (MODEL: paraphrase-MiniLM-L6-v2).
 
-**Architecture Diagram**
+## Architecture Diagram ##
   ![Architecture Diagram](../pictures/architecture_diagram.png)
 
-**Deployment Diagram**  
+## Deployment Diagram ##  
   ![Deployment Diagram](../pictures/deployment_diagram.png)
 ---
 
@@ -133,18 +133,17 @@ await TagLog.create({
 ---
 
 ## Here are the flow user interact with our system: 
--   ![Login Diagram](../pictures/login_sequence.png)
 Login pipeline
+-   ![Login Diagram](../pictures/login_sequence.png)
 
 --- 
-
--   ![Payment Diagram](../pictures/payment_sequence.png)
 Payment pipeline
+-   ![Payment Diagram](../pictures/payment_sequence.png)
 
 ---
-
--   ![AI Diagram](../pictures/ai_pipeline_sequence.png)
 AI pipeline
+-   ![AI Diagram](../pictures/ai_pipeline_sequence.png)
+
 
 ---
 
@@ -186,7 +185,7 @@ Explore fine-tuned Gemini on internal corpus
 
 ### Deployment
 
-- **Local hosting** (192.168.4.154) for semantic model → Low infra cost.
+- **Local hosting** Semantic model → Low infra cost.
 - **Gemini API** (Free tier or billing depending on usage).
 
 ### Scaling Strategy
